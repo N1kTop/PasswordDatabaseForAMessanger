@@ -123,8 +123,11 @@ Event Logging: Important actions such as login attempts, password changes, and a
 **Dependencies**
 
 Python 3.x
+
 sqlite3: For database management.
+
 Pillow (PIL): For generating CAPTCHA images.
+
 requests: For sending email recovery codes
 
 
