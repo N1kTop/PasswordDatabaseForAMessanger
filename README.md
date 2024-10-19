@@ -55,6 +55,7 @@ Columns: chat_id, user_id, message
 
 **Setup and Installation**
 Clone the repository:
+
 `
 git clone https://github.com/yourusername/messenger-database.git
 cd messenger-database
@@ -65,6 +66,7 @@ Install required dependencies:
 The project relies on some Python libraries like sqlite3, PIL, and requests.
 
 Install them using pip:
+
 `
 pip install hashlib
 pip install requests
@@ -75,6 +77,7 @@ pip install PIL
 **Running the Application**
 
 Run the program by executing the main script:
+
 `
 python chatting_app_database.py
 `
