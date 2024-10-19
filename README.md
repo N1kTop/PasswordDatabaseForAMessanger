@@ -5,28 +5,28 @@ The focus of this project is on building a secure user account system with hashe
 
 **Features**
 
-User Authentication:
+_User Authentication:_
 
 Secure sign-up with hashed passwords (SHA-256) and random salt generation.
 Log-in system with password verification.
 Admin users have elevated privileges for managing logs and users.
 
 
-Account Management:
+_Account Management:_
 
 Change username, password, or email.
 Delete accounts permanently.
 Password recovery via email with a verification code.
 
 
-Messaging System:
+_Messaging System:_
 
 Send messages between users.
 View chat history with friends.
 Create and manage friend relationships.
 
 
-Event Logging:
+_Event Logging:_
 
 Every significant event (sign-up, log-in, password change, etc.) is logged in the database.
 Admins can view all logs for users and the system.
@@ -35,31 +35,31 @@ Database Schema
 
 The **SQLite database** consists of the following tables:
 
-Users Table (Users):
+_Users Table (Users):_
 
 Stores user information such as ID, username, hashed password, salt, email, and admin status.
 Columns: id, username, hash, salt, email, admin
 
 
-Logs Table (Logs):
+_Logs Table (Logs):_
 
 Logs important system events such as log-ins, sign-ups, and password changes.
 Columns: id, event, user_id, username, outcome, datetime
 
 
-Relationships Table (Relationships):
+_Relationships Table (Relationships):_
 
 Tracks user friendships. A user can send a friend request or accept/decline friend requests.
 Columns: user1_id, user2_id, user1_status, user2_status
 
 
-Chat Table (Chat):
+_Chat Table (Chat):_
 
 Tracks the creation of user-to-user chats.
 Columns: id, user1_id, user2_id
 
 
-Messages Table (Messages):
+_Messages Table (Messages):_
 
 Stores the actual messages exchanged between users.
 Columns: chat_id, user_id, message
