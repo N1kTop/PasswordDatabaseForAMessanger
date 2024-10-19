@@ -11,11 +11,13 @@ Secure sign-up with hashed passwords (SHA-256) and random salt generation.
 Log-in system with password verification.
 Admin users have elevated privileges for managing logs and users.
 
+
 Account Management:
 
 Change username, password, or email.
 Delete accounts permanently.
 Password recovery via email with a verification code.
+
 
 Messaging System:
 
@@ -23,11 +25,13 @@ Send messages between users.
 View chat history with friends.
 Create and manage friend relationships.
 
+
 Event Logging:
 
 Every significant event (sign-up, log-in, password change, etc.) is logged in the database.
 Admins can view all logs for users and the system.
 Database Schema
+
 
 The **SQLite database** consists of the following tables:
 
@@ -36,24 +40,30 @@ Users Table (Users):
 Stores user information such as ID, username, hashed password, salt, email, and admin status.
 Columns: id, username, hash, salt, email, admin
 
+
 Logs Table (Logs):
 
 Logs important system events such as log-ins, sign-ups, and password changes.
 Columns: id, event, user_id, username, outcome, datetime
+
+
 Relationships Table (Relationships):
 
 Tracks user friendships. A user can send a friend request or accept/decline friend requests.
 Columns: user1_id, user2_id, user1_status, user2_status
+
 
 Chat Table (Chat):
 
 Tracks the creation of user-to-user chats.
 Columns: id, user1_id, user2_id
 
+
 Messages Table (Messages):
 
 Stores the actual messages exchanged between users.
 Columns: chat_id, user_id, message
+
 
 **Setup and Installation**
 
@@ -76,6 +86,7 @@ pip install requests
 pip install captcha
 pip install PIL
 `
+
 
 **Running the Application**
 
@@ -101,11 +112,13 @@ Users can also add friends by username.
 Admin Features:
 Admins can view the system logs and manage users, including changing their passwords or emails.
 
+
 **Security Features**
 
 Password Hashing: All passwords are hashed using the SHA-256 algorithm with a randomly generated salt to enhance security.
 Captcha Protection: Users are required to solve a CAPTCHA after five failed login attempts to prevent brute-force attacks.
 Event Logging: Important actions such as login attempts, password changes, and account deletions are logged to keep track of activity.
+
 
 **Dependencies**
 
@@ -113,6 +126,7 @@ Python 3.x
 sqlite3: For database management.
 Pillow (PIL): For generating CAPTCHA images.
 requests: For sending email recovery codes
+
 
 **Future Improvements**
 
