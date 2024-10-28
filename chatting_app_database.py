@@ -19,20 +19,20 @@ from captcha.image import ImageCaptcha
 from PIL import Image
 
 # Define different character sets for password complexity
-CHARACTERS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,./;'[]{}!@#$%^&*()_+-=~`|"
-ALPHA_NUMERICAL = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-CAPITAL_NUMERICAL = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-DIGITS = "0123456789"
-SPECIAL = ",./;'[]{}!@#$%^&*()_+-=~`|"
+CHARACTERS :str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,./;'[]{}!@#$%^&*()_+-=~`|"
+ALPHA_NUMERICAL :str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+CAPITAL_NUMERICAL :str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+DIGITS :str = "0123456789"
+SPECIAL :str = ",./;'[]{}!@#$%^&*()_+-=~`|"
 
-account = None # current signed-in account
-attempts = 0 # number of log-in attempts
+account :str = None # current signed-in account
+attempts :int = 0 # number of log-in attempts
 
 # Captcha generation setup
 image = ImageCaptcha(fonts=['captcha.ttf'])
 
 # Converts a string to an integer safely
-def convertToInt(s):
+def convertToInt(s :str):
     res = 0
     try:
         res =  int(s)
@@ -60,11 +60,11 @@ def generateSalt():
     return bytes(newSalt, "utf-8")
 
 # Hashes the password using SHA-256 with salt
-def hashPassword(password, salt):
+def hashPassword(password :str, salt :str):
     return hashlib.sha256(password + salt).hexdigest()
 
 # Returns the next user ID by finding the max ID and incrementing
-def nextUserId():
+def nextUserId() -> int:
     max_id = cur.execute("""
         SELECT max(id)
         FROM Users
@@ -74,7 +74,7 @@ def nextUserId():
     return max_id + 1
 
 # Adds a new user to the Users table with username, hashed password, and salt
-def addUser(username, hash, salt, isAdmin):
+def addUser(username :str, hash, salt :str, isAdmin :bool):
     data = (nextUserId(), username, hash, salt, isAdmin,)
 
     cur.execute("""
@@ -83,7 +83,7 @@ def addUser(username, hash, salt, isAdmin):
     """, data)
 
 # Removes a user from the Users table
-def removeUser(username):
+def removeUser(username :str):
     data = (username,)
     cur.execute("""
         DELETE FROM Users
@@ -91,7 +91,7 @@ def removeUser(username):
     """, data)
 
 # Updates the password hash for a user
-def updateHash(username, newHash):
+def updateHash(username :str, newHash):
     data = (newHash, username,)
     cur.execute("""
     UPDATE Users
@@ -100,7 +100,7 @@ def updateHash(username, newHash):
     """, data)
 
 # Updates a user's username in the Users table
-def updateUsername(username, newName):
+def updateUsername(username :str, newName :str):
     data = (newName, username,)
     cur.execute("""
     UPDATE Users
@@ -109,7 +109,7 @@ def updateUsername(username, newName):
     """, data)
 
 # Updates a user's email in the Users table
-def updateEmail(username, newEmail):
+def updateEmail(username :str, newEmail :str):
     data = (newEmail, username,)
     cur.execute("""
     UPDATE Users
@@ -128,7 +128,7 @@ def printAllUsers():
         print(*record)
 
 # Displays a user's friends list by querying the Relationships table
-def viewFriendsList(user_id):
+def viewFriendsList(user_id :int):
     friends1 = cur.execute("""
         SELECT user1_id
         FROM Relationships
@@ -177,7 +177,7 @@ def createMessagesTable():
     cur.execute("CREATE TABLE Messages(chat_id INT, user_id INT, message)")
 
 # Adds a new message to a chat
-def createChat(user1_id, user2_id):
+def createChat(user1_id :int, user2_id :int):
     data = (nextChatId(), user1_id, user2_id)
     cur.execute("""
         INSERT INTO Chat
@@ -198,7 +198,7 @@ def dbSetup():
         createMessagesTable()
 
 # Finds an existing chat between two users or returns None if it doesn't exist
-def findChat(user1_id, user2_id):
+def findChat(user1_id :int, user2_id :int):
     data = (user1_id, user2_id, user2_id, user1_id,)
     chatRequest = cur.execute("""
         SELECT id
@@ -215,7 +215,7 @@ def getChats():
     return cur.execute("SELECT * FROM Chat").fetchall()
 
 # Fetches all chats involving a particular user
-def getUserChats(user_id):
+def getUserChats(user_id :int):
     data = (user_id, user_id,)
     return cur.execute("""
         SELECT *
@@ -225,7 +225,7 @@ def getUserChats(user_id):
     """, data).fetchall()
 
 # Displays a list of chats involving a particular user
-def viewChats(user_id):
+def viewChats(user_id :int):
     chats = getUserChats(user_id)
     count = 1
     for chat in chats:
@@ -235,7 +235,7 @@ def viewChats(user_id):
     return chats
 
 # Adds a message to the Messages table for a specific chat
-def addMessage(chat_id, user_id, message):
+def addMessage(chat_id :int, user_id :int, message :str):
     data = (chat_id, user_id, message)
     cur.execute("""
         INSERT INTO Messages
@@ -243,7 +243,7 @@ def addMessage(chat_id, user_id, message):
     """, data)
 
 # Fetches the users involved in a specific chat
-def getChatters(chat_id):
+def getChatters(chat_id :int):
     people = cur.execute("""
         SELECT user1_id, user2_id
         FROM Chat
@@ -256,7 +256,7 @@ def getChatters(chat_id):
     return dict
 
 # Prints all messages from a specific chat, displaying the username alongside each message
-def printMessages(chat_id):
+def printMessages(chat_id :int):
     dict = getChatters(chat_id)
     messages = cur.execute("""
         SELECT message, user_id
@@ -270,7 +270,7 @@ def printMessages(chat_id):
         print(dict[message[1]] + ": " + message[0])
 
 # Reads and prints messages from a specific chat
-def readMessages(chat_id):
+def readMessages(chat_id :int):
     messages = cur.execute("""
         SELECT message, user_id
         FROM Messages
@@ -280,7 +280,7 @@ def readMessages(chat_id):
         print(*message)
 
 # Prints chats of a user by querying for both chat sides (user1 and user2)
-def printUserChats(user_id):
+def printUserChats(user_id :int):
     chats1 = cur.execute("""
         SELECT id, user1_id
         FROM Chats
@@ -297,7 +297,7 @@ def printUserChats(user_id):
         print(*chat)
 
 # Returns the next available Logs ID
-def nextLogsId():
+def nextLogsId() -> int:
     max_id = cur.execute("""
         SELECT max(id)
         FROM Logs
@@ -307,7 +307,7 @@ def nextLogsId():
     return max_id + 1
 
 # Returns the next available Chat ID
-def nextChatId():
+def nextChatId() -> int:
     max_id = cur.execute("""
         SELECT max(id)
         FROM Chat
@@ -317,7 +317,7 @@ def nextChatId():
     return max_id + 1
 
 # Logs an event (like log-in, sign-up, etc.) into the Logs table
-def logEvent(event, user_id, username, outcome):
+def logEvent(event :str, user_id :int, username :str, outcome :bool):
     data = (nextLogsId(), event, user_id, username, outcome, time.ctime())
     cur.execute("""
         INSERT INTO Logs VALUES
@@ -338,7 +338,7 @@ def printLogs():
         print(*log)
 
 # Checks if a user exists in the Users table by username
-def userExists(username):
+def userExists(username :str) -> bool:
     data = (username,)
     same_name = cur.execute("""
         SELECT *
@@ -373,7 +373,7 @@ def newUser():
     print("\nSuccessfully created user " + name)
 
 # Retrieves the salt for a user by querying the Users table
-def getSalt(username):
+def getSalt(username :str):
     data = (username,)
     saltRequest = cur.execute("SELECT salt FROM Users WHERE username = ?", data).fetchall()
     if len(saltRequest) == 0:
@@ -381,7 +381,7 @@ def getSalt(username):
     return saltRequest[0][0]
 
 # Retrieves the user ID based on the username
-def getId(username):
+def getId(username :str):
     data = (username,)
     idRequest = cur.execute("SELECT id FROM Users WHERE username = ?", data).fetchall()
     if len(idRequest) == 0:
@@ -389,7 +389,7 @@ def getId(username):
     return idRequest[0][0]
 
 # Retrieves the username based on the user ID
-def getUsername(id):
+def getUsername(id :int):
     data = (id,)
     usernameRequest = cur.execute("SELECT username FROM Users WHERE id = ?", data).fetchall()
     if len(usernameRequest) == 0:
@@ -397,8 +397,8 @@ def getUsername(id):
     return usernameRequest[0][0]
 
 # Handles password creation with guidelines to ensure strong passwords
-def createPassword(username):
-    strong = False
+def createPassword(username :str):
+    strong :bool = False
 
     print("\nChoose a password")
 
@@ -462,7 +462,9 @@ def createPassword(username):
 
 
 # Handles user login by verifying the username and password hash
-def logIn():
+# Return true or false based on logIn success
+# If successful, changes account name
+def logIn() -> bool:
     name = input("\nUsername: ")
     password = input("Password: ")
 
@@ -501,7 +503,7 @@ def logIn():
     return True
 
 # Prints the details of a user, including ID, username, email, and admin status
-def printUserDetails(username):
+def printUserDetails(username :str):
     data = (username,)
     res = cur.execute("""
         SELECT id, username, email, admin
@@ -526,7 +528,7 @@ def printUserDetails(username):
         print("ADMIN")
 
 # Checks if a user is an admin
-def isAdmin(username):
+def isAdmin(username :str):
     data = (username,)
     return cur.execute("""
         SELECT admin
@@ -535,7 +537,7 @@ def isAdmin(username):
     """, data).fetchall()[0][0]
 
 # Allows a user to change their username
-def changeUsername(username):
+def changeUsername(username :str):
     newName = input("\nUsername: ")
 
     while userExists(newName) and newName != "0":
@@ -552,7 +554,7 @@ def changeUsername(username):
     logEvent("username change", getId(newName), newName, True)
 
 # Allows a user to change their password
-def changePassword(username):
+def changePassword(username :str):
     newPassword = createPassword(username)
     if newPassword == 0:
         print("Password update canceled")
@@ -566,14 +568,14 @@ def changePassword(username):
     logEvent("password change", getId(username), username, True)
 
 # Allows a user to change their email
-def changeEmail(username):
+def changeEmail(username :str):
     newEmail = input("\nEmail: ")
     updateEmail(username, newEmail)
     print("\nSuccessfully changed email to " + newEmail)
     logEvent("email change", getId(username), username, True)
 
 # Allows a user to delete their account after confirming the action
-def deleteAccount(username):
+def deleteAccount(username :str) -> bool:
     choice = input("Do you want to delte this accoutn permanently? ")
 
     if len(choice) > 0 and choice[0] == "y":
@@ -624,14 +626,14 @@ def forgotPassword():
     changePassword(name)
 
 # Sends recovery code via email, feature is removed
-def sendRecoveryCode(email, code):
+def sendRecoveryCode(email :str, code :str):
     print("\nThis feature was temporarily removed\n")
     return None
 
 # Generates and displays a CAPTCHA that the user must solve before continuing
-def solveCaptcha():
+def solveCaptcha() -> bool:
     print("\nYou must solve the captcha to continue")
-    cap = generateCaptcha()
+    cap :str = generateCaptcha()
     data = image.generate(cap)
     image.write(cap, 'out.png')
     im = Image.open("out.png")
@@ -758,7 +760,7 @@ def adminUsersMenu():
             return
 
 # Allows admins to manage a specific user based on user ID or username
-def userModMenu(type, user):
+def userModMenu(type :str, user :str):
     if (type == "id"):
         usernameRequest = cur.execute("SELECT username FROM Users WHERE id = ?", (user,)).fetchall()
         if len(usernameRequest) == 0:
@@ -835,7 +837,7 @@ def chatsMenu():
     enterChat(chats[intChoice - 1][0])
 
 # Allows users to enter and interact in a specific chat
-def enterChat(chat_id):
+def enterChat(chat_id :int):
     user_id = getId(account)
     printMessages(chat_id)
     while True:
@@ -910,7 +912,7 @@ def addFriendMenu():
     addFriend(account, friendUsername)
 
 # Adds a friend to the user's friend list by updating or creating a relationship
-def addFriend(username1, username2):
+def addFriend(username1 :str, username2 :str):
     user1_id = getId(username1)
     user2_id = getId(username2)
 
@@ -933,7 +935,7 @@ def addFriend(username1, username2):
     print("Friend request added")
 
 # Checks if a relationship between two users exists in the Relationships table
-def relationshipExists(user1_id, user2_id):
+def relationshipExists(user1_id: int, user2_id: int) -> bool:
     data = (user1_id, user2_id,)
     ralationshipRequst = cur.execute("""
         SELECT *
@@ -943,7 +945,7 @@ def relationshipExists(user1_id, user2_id):
     return len(ralationshipRequst) > 0
 
 # Displays the logs of a specific user by querying the Logs table
-def userLogs(username):
+def userLogs(username: str):
     data = (username,)
     logs = cur.execute("""
         SELECT *
