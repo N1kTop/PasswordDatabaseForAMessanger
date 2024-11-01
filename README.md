@@ -1,4 +1,4 @@
-**---Messenger Database---**
+# Messenger Database
 
 This is a Python-based Messenger application that interacts with an SQLite database for managing user accounts, messaging, and event logs.
 The focus of this project is on building a secure user account system with hashed and salted passwords, as well as logging events such as user logins, sign-ups, and password changes.
