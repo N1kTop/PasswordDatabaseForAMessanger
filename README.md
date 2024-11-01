@@ -3,7 +3,7 @@
 This is a Python-based Messenger application that interacts with an SQLite database for managing user accounts, messaging, and event logs.
 The focus of this project is on building a secure user account system with hashed and salted passwords, as well as logging events such as user logins, sign-ups, and password changes.
 
-**Features**
+## Features
 
 _User Authentication:_
 
@@ -32,6 +32,8 @@ Every significant event (sign-up, log-in, password change, etc.) is logged in th
 Admins can view all logs for users and the system.
 Database Schema
 
+
+## Database
 
 The **SQLite database** consists of the following tables:
 
@@ -88,7 +90,7 @@ pip install PIL
 `
 
 
-**Running the Application**
+## Running the Application
 
 Run the program by executing the main script:
 
@@ -113,14 +115,14 @@ Admin Features:
 Admins can view the system logs and manage users, including changing their passwords or emails.
 
 
-**Security Features**
+## Security Features
 
 Password Hashing: All passwords are hashed using the SHA-256 algorithm with a randomly generated salt to enhance security.
 Captcha Protection: Users are required to solve a CAPTCHA after five failed login attempts to prevent brute-force attacks.
 Event Logging: Important actions such as login attempts, password changes, and account deletions are logged to keep track of activity.
 
 
-**Dependencies**
+## Dependencies
 
 Python 3.x
 
@@ -131,7 +133,7 @@ Pillow (PIL): For generating CAPTCHA images.
 requests: For sending email recovery codes
 
 
-**Future Improvements**
+## Future Improvements
 
 Network Integration: The current application runs offline. A future goal is to add network support to allow messaging across devices.
 Improved UI: The current interface is text-based. A graphical user interface (GUI) could be implemented for a better user experience.
