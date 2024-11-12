@@ -41,12 +41,18 @@ _Users Table (Users):_
 
 Stores user information such as ID, username, hashed password, salt, email, and admin status.
 Columns: id, username, hash, salt, email, admin
+Example:
+
+![image](https://github.com/user-attachments/assets/b8bfad8f-41c7-4fad-a8ab-e82ff9ef1740)
 
 
 _Logs Table (Logs):_
 
 Logs important system events such as log-ins, sign-ups, and password changes.
 Columns: id, event, user_id, username, outcome, datetime
+Example:
+
+![image](https://github.com/user-attachments/assets/33f5a7db-faa2-4998-85ae-fef3c0306451)
 
 
 _Relationships Table (Relationships):_
