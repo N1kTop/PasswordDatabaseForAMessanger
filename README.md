@@ -5,28 +5,28 @@ The focus of this project is on building a secure user account system with hashe
 
 ## Features
 
-_User Authentication:_
+**User Authentication:**
 
 Secure sign-up with hashed passwords (SHA-256) and random salt generation.
 Log-in system with password verification.
 Admin users have elevated privileges for managing logs and users.
 
 
-_Account Management:_
+**Account Management:**
 
 Change username, password, or email.
 Delete accounts permanently.
 Password recovery via email with a verification code.
 
 
-_Messaging System:_
+**Messaging System:**
 
 Send messages between users.
 View chat history with friends.
 Create and manage friend relationships.
 
 
-_Event Logging:_
+**Event Logging:**
 
 Every significant event (sign-up, log-in, password change, etc.) is logged in the database.
 Admins can view all logs for users and the system.
@@ -37,7 +37,7 @@ Database Schema
 
 The **SQLite database** consists of the following tables:
 
-_Users Table (Users):_
+**Users Table (Users):**
 
 Stores user information such as ID, username, hashed password, salt, email, and admin status.
 Columns: id, username, hash, salt, email, admin
@@ -46,7 +46,7 @@ Example:
 ![image](https://github.com/user-attachments/assets/b8bfad8f-41c7-4fad-a8ab-e82ff9ef1740)
 
 
-_Logs Table (Logs):_
+**Logs Table (Logs):**
 
 Logs important system events such as log-ins, sign-ups, and password changes.
 Columns: id, event, user_id, username, outcome, datetime
@@ -55,25 +55,25 @@ Example:
 ![image](https://github.com/user-attachments/assets/33f5a7db-faa2-4998-85ae-fef3c0306451)
 
 
-_Relationships Table (Relationships):_
+**Relationships Table (Relationships):**
 
 Tracks user friendships. A user can send a friend request or accept/decline friend requests.
 Columns: user1_id, user2_id, user1_status, user2_status
 
 
-_Chat Table (Chat):_
+**Chat Table (Chat):**
 
 Tracks the creation of user-to-user chats.
 Columns: id, user1_id, user2_id
 
 
-_Messages Table (Messages):_
+**Messages Table (Messages):**
 
 Stores the actual messages exchanged between users.
 Columns: chat_id, user_id, message
 
 
-**Setup and Installation**
+## Setup and Installation
 
 Clone the repository:
 
